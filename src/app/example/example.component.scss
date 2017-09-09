@@ -1,0 +1,69 @@
+.left-dock {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 60px;
+  background: #141414;
+  color: #ffffff;
+  list-style: none;
+  padding: 20px 0;
+  overflow: hidden;
+  transition: .5s;
+  li:first-of-type {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 5px 20px;
+    margin-bottom: 20px;
+
+    visibility: visible;
+    cursor: pointer;
+    div {
+      width: 30px;
+      height: 2px;
+      background: #ffffff;
+      transition: .5s;
+    }
+  }
+  li {
+    visibility: hidden;
+    padding: 10px 20px;
+    &.search {
+      width: 100%;
+      input {
+        border-radius: 10px;
+        padding: 5px 10px;
+        width: 100%;
+        border: 1px solid #777777;
+        color: #EEEEEE;
+        background: #242424;
+        outline: none;
+      }
+    }
+  }
+  &.visible {
+    width: 300px;
+    li {
+      visibility: visible;
+    }
+    li:first-of-type {
+      div {
+        &:nth-of-type(1) {
+          transform: translateY(450%) rotate(-45deg);
+        }
+        &:nth-of-type(2) {
+          transform: translateX(50%);
+          opacity: 0;
+        }
+        &:nth-of-type(3) {
+          transform: translateY(-450%) rotate(45deg);
+        }
+      }
+    }
+  }
+}
+

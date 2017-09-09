@@ -1,0 +1,19 @@
+<ul class="left-dock" [class.visible]="visible">
+  <li class="hamburger" (click)="onHamburgerClick()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </li>
+  <li class="search"><input type="search" placeholder="Search"></li>
+  <li>test</li>
+  <li>test</li>
+  <li>test</li>
+  <li>test</li>
+  <li>test</li>
+  <li>test</li>
+</ul>
+<ul class="nav">
+  <li class="nav-item"><a class="nav-link" [routerLink]="['./test']">Test site</a></li>
+  <li class="nav-item"><a class="nav-link" [routerLink]="['./your_random_text']">You can write everything</a></li>
+</ul>
+<router-outlet></router-outlet>

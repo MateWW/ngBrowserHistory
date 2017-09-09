@@ -1,0 +1,20 @@
+img{
+  width:100px;
+  margin-right: 20px;
+}
+.nav{
+  width:100%;
+}
+.nav-link{
+  transition: color .3s, font-weight .5s;
+  color:#000000;
+  font-size:36px;
+  font-weight: 300;
+  &:hover{
+    color:#3c763d;
+  }
+  &.active{
+    color:#3c763d;
+    font-weight: 400;
+  }
+}
