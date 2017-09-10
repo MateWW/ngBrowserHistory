@@ -5,7 +5,7 @@ import {TestComponent} from './test/test.component';
 import {CatchAllComponent} from './catch-all/catch-all.component';
 
 const routes: Routes = [
-  {path: '', component: ExampleComponent, children:[
+  {path: '', component: ExampleComponent, children: [
     {path: 'test', component: TestComponent},
     {path: ':id', component: CatchAllComponent},
     {path: '**', component: CatchAllComponent}
@@ -16,7 +16,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes)
   ],
-  exports:[RouterModule]
+  exports: [RouterModule]
 })
 export class ExampleRoutingModule {
 }

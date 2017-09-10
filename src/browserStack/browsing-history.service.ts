@@ -2,10 +2,9 @@ import {Injectable} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {BrowsingHistory} from './browser-history.strore';
 import {Subject} from 'rxjs/Subject';
-import "rxjs/add/operator/startWith";
-import "rxjs/add/operator/map";
-import {HistoryElement} from './interfaces';
-import {browser} from 'protractor';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';
+import {HistoryElement, FilteredHistoryElement} from './interfaces';
 
 @Injectable()
 export class BrowsingHistoryService {
@@ -15,13 +14,13 @@ export class BrowsingHistoryService {
 
   private static explodeUrl(url: string) {
     const split = url.split('/');
-    if (split.length === 1 && split[0] === "") {
+    if (split.length === 1 && split[0] === '') {
       return [];
     }
     return split;
   }
 
-  private static convertToFiltred(stack: HistoryElement, segmentName: string, segmentId: number) {
+  private static convertToFiltered(stack: HistoryElement, segmentName: string, segmentId: number): FilteredHistoryElement {
     return Object.assign({}, stack, {
       segmentName,
       segmentId
@@ -35,17 +34,17 @@ export class BrowsingHistoryService {
         this.browsingHistory.addStack(event.urlAfterRedirects);
         this.browsingStream.next(this.browsingHistory.getStack());
       }
-    })
+    });
   }
 
   getLastUrl() {
     return this.browsingHistory.getLast();
   }
 
-  getBySegmentId(id: number, position: string = "last") {
+  getBySegmentId(id: number, position: string = 'last') {
     const stack = this.browsingHistory.getStack();
     let parser;
-    if (position === "last") {
+    if (position === 'last') {
       parser = this.browsingStream.startWith(stack).map((mappedStack) => this.parseByLastId(mappedStack, id));
     } else {
       parser = this.browsingStream.startWith(stack).map((mappedStack) => this.parseByFirstId(mappedStack, id));
@@ -53,24 +52,26 @@ export class BrowsingHistoryService {
     return parser;
   }
 
-  getBySegmentName(segmentName: string) {
+  getBySegmentName(segmentName: string, matchSegmentId?: number) {
+    const stack = this.browsingHistory.getStack();
+    return this.browsingStream.startWith(stack).map((mappedStack) => this.parseByName(mappedStack, segmentName, matchSegmentId));
   }
 
   // return every last element of
 
   private parseByLastId(stack: HistoryElement[], id: number) {
-    const filteredStack: HistoryElement[] = [];
+    const filteredStack: FilteredHistoryElement[] = [];
     stack.forEach((stackElement: HistoryElement) => {
       const tempLen = filteredStack.length,
-        lastElementUrl = tempLen > 0 ? filteredStack[tempLen - 1].url : "",
+        lastElementUrl = tempLen > 0 ? filteredStack[tempLen - 1].url : '',
         lastElementUrlArray = BrowsingHistoryService.explodeUrl(lastElementUrl),
         currentElementUrlArray = BrowsingHistoryService.explodeUrl(stackElement.url);
       if (currentElementUrlArray.length === 0 || currentElementUrlArray.length - 1 < id) {
         return;
       } else if (lastElementUrlArray.length === 0 || currentElementUrlArray[id] !== lastElementUrlArray[id]) {
-        filteredStack.push(BrowsingHistoryService.convertToFiltred(stackElement,currentElementUrlArray[id], id));
+        filteredStack.push(BrowsingHistoryService.convertToFiltered(stackElement, currentElementUrlArray[id], id));
       } else if (currentElementUrlArray[id] === lastElementUrlArray[id]) {
-        filteredStack[tempLen - 1] = BrowsingHistoryService.convertToFiltred(stackElement,currentElementUrlArray[id], id);
+        filteredStack[tempLen - 1] = BrowsingHistoryService.convertToFiltered(stackElement, currentElementUrlArray[id], id);
       }
     });
     return filteredStack;
@@ -78,19 +79,41 @@ export class BrowsingHistoryService {
 
 
   private parseByFirstId(stack: HistoryElement[], id: number) {
-    const filteredStack: HistoryElement[] = [];
+    const filteredStack: FilteredHistoryElement[] = [];
     stack.forEach((stackElement: HistoryElement) => {
       const tempLen = filteredStack.length,
-        lastElementUrl = tempLen > 0 ? filteredStack[tempLen - 1].url : "",
+        lastElementUrl = tempLen > 0 ? filteredStack[tempLen - 1].url : '',
         lastElementUrlArray = BrowsingHistoryService.explodeUrl(lastElementUrl),
         currentElementUrlArray = BrowsingHistoryService.explodeUrl(stackElement.url);
       if (currentElementUrlArray.length === 0 || currentElementUrlArray.length - 1 < id) {
         return;
       } else if (lastElementUrlArray.length === 0 || currentElementUrlArray[id] !== lastElementUrlArray[id]) {
-        filteredStack.push(BrowsingHistoryService.convertToFiltred(stackElement, currentElementUrlArray[id], id));
+        filteredStack.push(BrowsingHistoryService.convertToFiltered(stackElement, currentElementUrlArray[id], id));
       }
     });
     return filteredStack;
   }
+
+  private parseByName(stack: HistoryElement[], name: string, segmentId?: number) {
+    const filteredStack: FilteredHistoryElement[] = [];
+    stack.forEach((stackElement: HistoryElement) => {
+      const currentExplodeUrl = BrowsingHistoryService.explodeUrl(stackElement.url);
+      currentExplodeUrl.some((element, index) => {
+        if (element === name) {
+          if (segmentId) {
+            if (segmentId === index) {
+              filteredStack.push(BrowsingHistoryService.convertToFiltered(stackElement, element, index));
+            }
+          } else {
+            filteredStack.push(BrowsingHistoryService.convertToFiltered(stackElement, element, index));
+          }
+          return true;
+        }
+        return false;
+      });
+    });
+    return filteredStack;
+  }
+
 
 }

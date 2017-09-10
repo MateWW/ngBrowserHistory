@@ -7,7 +7,7 @@ import {HomeDetailsComponent} from './home-details/home-details.component';
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: ':id', component: HomeDetailsComponent}
-]
+];
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [],
-  exports:[
+  exports: [
     RouterModule
   ]
 })

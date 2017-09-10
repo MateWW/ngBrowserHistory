@@ -8,12 +8,12 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class CatchAllComponent implements OnInit {
 
-  routeName:string;
+  routeName: string;
 
   constructor( route: ActivatedRoute) {
-    route.params.subscribe( (param)=> {
+    route.params.subscribe( (param) => {
       this.routeName = param['id'];
-    })
+    });
   }
 
   ngOnInit() {
