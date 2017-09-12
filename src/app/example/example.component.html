@@ -4,7 +4,23 @@
     <div></div>
     <div></div>
   </li>
-  <li class="search"><input type="search" placeholder="Search"></li>
+  <li class="search">
+    <form [formGroup]="searchForm">
+      <input id="search" formControlName="search" type="search" placeholder="Search">
+      <input [hidden]="!searchForm.value.filterById" id="segmentId" formControlName="segmentId" type="number" placeholder="SegmentId">
+      <div class="form_controls">
+        <input id="save" formControlName="save" type="checkbox">
+        <label for="save">Save in localStorage</label>
+        <input id="filterById" formControlName="filterById" type="checkbox">
+        <label for="filterById">Filter by segment id</label>
+        <input [hidden]="!searchForm.value.filterById" id="filterByFirstId" formControlName="filterByIdSection" type="radio" [value]="'first'" name="filterByIdSection" checked>
+        <label [hidden]="!searchForm.value.filterById" for="filterByFirstId">Filter first of every series (by id)</label>
+        <input [hidden]="!searchForm.value.filterById" id="filterByLastId" formControlName="filterByIdSection" type="radio" [value]="'last'" name="filterByIdSection">
+        <label [hidden]="!searchForm.value.filterById" for="filterByLastId">Filter last of every series (by id)</label>
+        <figure class="settings">⇩</figure>
+      </div>
+    </form>
+  </li>
   <li>test</li>
   <li>test</li>
   <li>test</li>

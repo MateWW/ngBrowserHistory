@@ -34,8 +34,9 @@
     padding: 10px 20px;
     &.search {
       width: 100%;
-      input {
+      & > form > input {
         border-radius: 10px;
+        margin-top: 10px;
         padding: 5px 10px;
         width: 100%;
         border: 1px solid #777777;
@@ -43,6 +44,46 @@
         background: #242424;
         outline: none;
       }
+      .form_controls {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 10px 0;
+        max-height: 0px;
+        overflow: hidden;
+        transition: .5s;
+        label {
+          line-height: 1.5;
+          margin-bottom: 0;
+        }
+        & > * {
+          margin-top: 5px;
+          &:nth-child(odd) {
+            width: 10%;
+          }
+          &:nth-child(even) {
+            width: 90%;
+          }
+        }
+        .settings {
+          margin: 0;
+          width: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          text-align: center;
+          transition: .5s;
+        }
+        &:hover {
+          max-height: 300px;
+          padding: 20px 0;
+          .settings {
+            opacity: 0.5;
+          }
+        }
+      }
+
     }
   }
   &.visible {
