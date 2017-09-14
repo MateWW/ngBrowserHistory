@@ -2,8 +2,7 @@ import {Subject} from 'rxjs/Subject';
 import {FilteredHistoryElement, HistoryElement} from './interfaces';
 
 
-
-export class BrowserHistoryFilters extends Subject<HistoryElement[]>{
+export class BrowserHistoryFilters extends Subject<HistoryElement[]> {
 
   private static explodeUrl(url: string) {
     const split = url.split('/');

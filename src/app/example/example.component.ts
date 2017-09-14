@@ -16,11 +16,11 @@ enum filter {
 export class ExampleComponent implements OnInit {
 
   searchForm = new FormGroup({
-    search: new FormControl(""),
+    search: new FormControl(''),
     segmentId: new FormControl(),
     save: new FormControl(),
     filterById: new FormControl(),
-    filterByIdSection: new FormControl("first")
+    filterByIdSection: new FormControl('first')
   });
 
   visible = false;
@@ -44,24 +44,24 @@ export class ExampleComponent implements OnInit {
 
   parseForm() {
     this.searchForm.valueChanges.subscribe((values) => {
-      this.browserHistoryService.saveStackStatus(values.save)
+      this.browserHistoryService.saveStackStatus(values.save);
 
-      if(values.search === "" && !values.segmentId ) {
+      if (values.search === '' && !values.segmentId ) {
         this.chooseSubscription();
-      } else if(values.search === "" && (!values.segmentId || !values.filterById)) {
+      } else if (values.search === '' && (!values.segmentId || !values.filterById)) {
         this.chooseSubscription();
-      } else if(values.search.length > 0 && !values.segmentId) {
-        this.chooseSubscription(filter.name, values.search)
-      } else if(values.search.length > 0 && values.segmentId && values.filterById) {
-        this.chooseSubscription(filter.name, values.search, values.segmentId)
-      } else if(values.search === "" && values.segmentId && values.filterById) {
-        this.chooseSubscription(filter.id, "", values.segmentId, values.filterByIdSection )
+      } else if (values.search.length > 0 && !values.segmentId) {
+        this.chooseSubscription(filter.name, values.search);
+      } else if (values.search.length > 0 && values.segmentId && values.filterById) {
+        this.chooseSubscription(filter.name, values.search, values.segmentId);
+      } else if (values.search === '' && values.segmentId && values.filterById) {
+        this.chooseSubscription(filter.id, '', values.segmentId, values.filterByIdSection );
       }
-    })
+    });
   }
 
-  chooseSubscription(name?: number, segment?: string, id?: number, filterDirection?:string) {
-    console.log(name,segment,id,filterDirection);
+  chooseSubscription(name?: number, segment?: string, id?: number, filterDirection?: string) {
+    console.log(name, segment, id, filterDirection);
     if (this.stream) {
       this.stream.unsubscribe();
     }
@@ -69,18 +69,18 @@ export class ExampleComponent implements OnInit {
     let stream;
 
     if (!name) {
-      stream = this.browserHistoryService.getHistory()
+      stream = this.browserHistoryService.getHistory();
     } else if (name === filter.name) {
-      stream = this.browserHistoryService.filterBySegment(segment, id)
+      stream = this.browserHistoryService.filterBySegment(segment, id);
     } else if (name === filter.id) {
-      stream = this.browserHistoryService.filterBySegmentId(id, filterDirection)
+      stream = this.browserHistoryService.filterBySegmentId(id, filterDirection);
     }
 
 
     if (stream) {
       this.stream = stream.subscribe((stack) => {
         this.stack = stack;
-      })
+      });
     }
   }
 

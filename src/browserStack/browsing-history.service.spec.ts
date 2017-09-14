@@ -79,46 +79,46 @@ describe('BrowsingHistoryService', () => {
     TestBed.get(Router).events.next(new NavigationEnd(0, '', '/test/page/url')); // id 0
     TestBed.get(Router).events.next(new NavigationEnd(0, '', '//second/url/test'));  // id 1
     TestBed.get(Router).events.next(new NavigationEnd(0, '', '/test//page/last/'));  // id 2
-    service.filterBySegment("page").subscribe((val) => {
+    service.filterBySegment('page').subscribe((val) => {
       expect(val[0].segmentName).toBe('page');
       expect(val[0].id).toBe(0);
       expect(val[1].segmentName).toBe('page');
       expect(val[1].id).toBe(2);
       expect(val.length).toBe(2);
     }).unsubscribe();
-    service.filterBySegment("page", 2).subscribe((val) => {
+    service.filterBySegment('page', 2).subscribe((val) => {
       expect(val.length).toBe(1);
       expect(val[0].id).toBe(0);
       expect(val[0].segmentName).toBe('page');
     }).unsubscribe();
-    service.filterBySegment("this is empty").subscribe((val) => {
+    service.filterBySegment('this is empty').subscribe((val) => {
       expect(val.length).toBe(0);
     }).unsubscribe();
-    service.filterBySegment("this is empty", 1).subscribe((val) => {
+    service.filterBySegment('this is empty', 1).subscribe((val) => {
       expect(val.length).toBe(0);
     }).unsubscribe();
-    service.filterBySegment("this is empty", 11).subscribe((val) => {
+    service.filterBySegment('this is empty', 11).subscribe((val) => {
       expect(val.length).toBe(0);
     }).unsubscribe();
   }));
 
-  it("should change save status", inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
+  it('should change save status', inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
     (<any>service).browsingHistory = {
       saveStack: jasmine.createSpy('saveStack')
     };
-    service.saveStackStatus(true)
+    service.saveStackStatus(true);
 
     expect((<any>service).browsingHistory.saveStack ).toHaveBeenCalledWith(true);
   }));
 
-  it("should change save status", inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
+  it('should change save status', inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
     (<any>service).browsingHistory = {
       getSaveStackStatus: jasmine.createSpy('getSaveStackStatus').and.returnValue(true)
     };
     expect(service.getSaveStackStatus()).toBeTruthy();
   }));
 
-  it("should get full stack", fakeAsync(inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
+  it('should get full stack', fakeAsync(inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
     TestBed.get(Router).events.next(new NavigationEnd(0, '', '/test/page/url'));
     TestBed.get(Router).events.next(new NavigationEnd(0, '', '//page/second/url/test'));
     TestBed.get(Router).events.next(new NavigationEnd(0, '', '/page/last/'));

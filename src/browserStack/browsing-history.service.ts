@@ -4,7 +4,6 @@ import {BrowsingHistory} from './browser-history.strore';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
-import {HistoryElement, FilteredHistoryElement} from './interfaces';
 import {BrowserHistoryFilters} from './browser-history.filters';
 
 @Injectable()
@@ -23,15 +22,15 @@ export class BrowsingHistoryService {
     });
   }
 
-  saveStackStatus(status:boolean){
+  saveStackStatus(status: boolean) {
     this.browsingHistory.saveStack(status);
   }
 
-  getSaveStackStatus(){
+  getSaveStackStatus() {
     return this.browsingHistory.getSaveStackStatus();
   }
 
-  getHistory(){
+  getHistory() {
     const stack = this.browsingHistory.getStack();
     return this.browsingStream.startWith(stack);
   }
@@ -49,7 +48,9 @@ export class BrowsingHistoryService {
 
   filterBySegment(segmentName: string, matchSegmentId?: number) {
     const stack = this.browsingHistory.getStack();
-    return this.browsingStream.startWith(stack).map((mappedStack) => BrowserHistoryFilters.parseByName(mappedStack, segmentName, matchSegmentId));
+    return this.browsingStream.startWith(stack).map(
+      (mappedStack) => BrowserHistoryFilters.parseByName(mappedStack, segmentName, matchSegmentId)
+    );
   }
 
 }

@@ -4,7 +4,7 @@ export class BrowsingHistory {
 
   private historyStack: HistoryElement[] = <HistoryElement[]>[];
   private _saveStack = false;
-  private _localStorageKey = "ngBrowserStack";
+  private _localStorageKey = 'ngBrowserStack';
 
   constructor() {
     this.loadStack();
@@ -14,8 +14,8 @@ export class BrowsingHistory {
     if (!Storage) {
       return;
     }
-    let stack = localStorage.getItem(this._localStorageKey);
-    if(!stack || stack === ""){
+    const stack = localStorage.getItem(this._localStorageKey);
+    if (!stack || stack === '') {
       return this.historyStack = [];
     }
     this._saveStack = true;
@@ -27,7 +27,7 @@ export class BrowsingHistory {
     this.saveData();
   }
 
-  getSaveStackStatus(){
+  getSaveStackStatus() {
     return this._saveStack;
   }
 

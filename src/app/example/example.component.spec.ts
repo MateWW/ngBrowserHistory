@@ -17,7 +17,7 @@ describe('ExampleComponent', () => {
     },
     filterBySegmentId() {
     }
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
