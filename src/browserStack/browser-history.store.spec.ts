@@ -55,6 +55,17 @@ describe('BrowserHistoryStorage', () => {
     expect(storage.getStack().length).toBe(stackSize + 1);
   });
 
+  it( 'should clear stack', () => {
+    storage.addStack('test/url/test');
+    storage.addStack('test/url/test/test');
+    storage.saveStack(true);
+    expect(storage.getStack().length).toBe(2);
+    let tempStorage = new BrowsingHistory();
+    expect(tempStorage.getStack().length).toBe(2);
+    tempStorage.cleanStack();
+    expect(tempStorage.getStack().length).toBe(0);
+  });
+
 
 });
 

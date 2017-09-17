@@ -22,6 +22,11 @@ export class BrowsingHistory {
     return this.historyStack = JSON.parse(stack);
   }
 
+  cleanStack(){
+    this.historyStack = [];
+    this.saveData();
+  }
+
   saveStack(state: boolean) {
     this._saveStack = state;
     this.saveData();

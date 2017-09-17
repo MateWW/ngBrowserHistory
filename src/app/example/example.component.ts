@@ -32,7 +32,7 @@ export class ExampleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchForm.controls.save.setValue(this.browserHistoryService.getSaveStackStatus());
+    this.searchForm.controls.save.setValue(this.browserHistoryService.getSaveStatus());
     this.parseForm();
     this.chooseSubscription();
 
@@ -44,7 +44,7 @@ export class ExampleComponent implements OnInit {
 
   parseForm() {
     this.searchForm.valueChanges.subscribe((values) => {
-      this.browserHistoryService.saveStackStatus(values.save);
+      this.browserHistoryService.setSaveStatus(values.save);
 
       if (values.search === '' && !values.segmentId ) {
         this.chooseSubscription();

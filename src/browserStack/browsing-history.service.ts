@@ -22,11 +22,16 @@ export class BrowsingHistoryService {
     });
   }
 
-  saveStackStatus(status: boolean) {
+  cleanHistory(){
+    this.browsingHistory.cleanStack();
+    this.browsingStream.next(this.browsingHistory.getStack());
+  }
+
+  setSaveStatus(status: boolean) {
     this.browsingHistory.saveStack(status);
   }
 
-  getSaveStackStatus() {
+  getSaveStatus() {
     return this.browsingHistory.getSaveStackStatus();
   }
 

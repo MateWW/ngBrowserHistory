@@ -17,6 +17,7 @@ To start using browser history you must download service from github and import 
  | `filterBySegment( segmentName: string, segmentId?: number)` | return filtered element of history which contain segment with specified name. `segmentId` skip elements which contain specified name in different segment then specified in id |
  | `saveStackStatus(status:boolean)` | Specified whether history should be saved in `localStorage` |
  | `getSaveStackStatus()` | return information about status of stackSave | 
+ | `cleanHistory()` | clean history | 
 
 ## Development server
 

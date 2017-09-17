@@ -18,12 +18,26 @@ describe('BrowsingHistoryService', () => {
     });
   });
 
+  beforeEach(() => {
+    TestBed.get(BrowsingHistoryService).cleanHistory();
+  });
+
   it('should be created', inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
     expect(service).toBeTruthy();
   }));
 
   it('should parse empty stack', async(inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
     service.filterBySegmentId(5).subscribe((val) => {
+      expect(val.length).toBe(0);
+    });
+  })));
+
+  it('should clean stack', async(inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
+    TestBed.get(Router).events.next(new NavigationEnd(0, '', '/test/page/url'));
+    TestBed.get(Router).events.next(new NavigationEnd(0, '', '//page/second/url/test'));
+    TestBed.get(Router).events.next(new NavigationEnd(0, '', '/page/last/'));
+    service.cleanHistory();
+    service.getHistory().subscribe((val) => {
       expect(val.length).toBe(0);
     });
   })));
@@ -41,7 +55,7 @@ describe('BrowsingHistoryService', () => {
 
     service.filterBySegmentId(2).subscribe((val) => {
       expect(val[0].segmentName).toBe('page');
-      expect(val[1].segmentName).toBe( 'last');
+      expect(val[1].segmentName).toBe('last');
     }).unsubscribe();
 
     service.filterBySegmentId(4).subscribe((val) => {
@@ -106,16 +120,16 @@ describe('BrowsingHistoryService', () => {
     (<any>service).browsingHistory = {
       saveStack: jasmine.createSpy('saveStack')
     };
-    service.saveStackStatus(true);
+    service.setSaveStatus(true);
 
-    expect((<any>service).browsingHistory.saveStack ).toHaveBeenCalledWith(true);
+    expect((<any>service).browsingHistory.saveStack).toHaveBeenCalledWith(true);
   }));
 
   it('should change save status', inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
     (<any>service).browsingHistory = {
-      getSaveStackStatus: jasmine.createSpy('getSaveStackStatus').and.returnValue(true)
+      getSaveStackStatus: jasmine.createSpy('getSaveStatus').and.returnValue(true)
     };
-    expect(service.getSaveStackStatus()).toBeTruthy();
+    expect(service.getSaveStatus()).toBeTruthy();
   }));
 
   it('should get full stack', fakeAsync(inject([BrowsingHistoryService], (service: BrowsingHistoryService) => {
@@ -123,7 +137,7 @@ describe('BrowsingHistoryService', () => {
     TestBed.get(Router).events.next(new NavigationEnd(0, '', '//page/second/url/test'));
     TestBed.get(Router).events.next(new NavigationEnd(0, '', '/page/last/'));
     tick();
-    service.getHistory().subscribe( (stack) => {
+    service.getHistory().subscribe((stack) => {
       expect(stack.length).toBe(3);
     });
   })));
